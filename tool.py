@@ -535,8 +535,8 @@ class Tool(Application):
         print_and_execute("CREATE TEMPORARY TABLE {0} AS {1}".format(nexttable,
                                                                      self.fil.sql(lasttable)),
                           self.cur)
-        # print_and_execute("ALTER TABLE {0} ADD INDEX (userid)".format(nexttable), self.cur)
-        # print_and_execute("ALTER TABLE {0} ADD INDEX (serverid)".format(nexttable), self.cur)
+        print_and_execute("ALTER TABLE {0} ADD INDEX (userid)".format(nexttable), self.cur)
+        print_and_execute("ALTER TABLE {0} ADD INDEX (serverid)".format(nexttable), self.cur)
 
         self.last_used_fil = self.fil
 
