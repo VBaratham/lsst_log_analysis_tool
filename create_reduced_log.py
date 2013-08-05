@@ -143,7 +143,7 @@ def create_schema(cur):
     cur.execute("CREATE TABLE servers (server MEDIUMTEXT, serverid INT)")
 
 
-def create_unified(cur, initial_tables = ['2010_01', '2010_02', '2010_03']):
+def create_unified(cur):
     """
     When the reduced_log.unified table does not exist, or when the schema
     changes, run this function to regenerate it.
@@ -152,6 +152,10 @@ def create_unified(cur, initial_tables = ['2010_01', '2010_02', '2010_03']):
     """
 
     cur.execute("USE reduced_log")
+
+    # Get list of 2 initial tables
+    cur.execute("SHOW TABLES")
+    initial_tables = [x for x, in cur.fetchall()][:2]
 
     print_and_execute("CREATE TABLE unified {0}".format(" UNION ALL ".join("SELECT * FROM {0}".format(t) for t in initial_tables)), cur)
     print_and_execute("ALTER TABLE unified ADD INDEX (userid)", cur)
