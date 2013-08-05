@@ -5,6 +5,8 @@ terminal installation instructions, see
 https://mailman.cae.wisc.edu/pipermail/help-octave/2005-August/017633.html
 and http://www.physics.buffalo.edu/phy410-505/tools/install/)
 
+mysql's general_log should have a table for each month, named 'yyyy_mm'
+
 ================================================================================
 
 CONFIGURING THE TOOL
@@ -12,7 +14,8 @@ CONFIGURING THE TOOL
 Edit connection "db_conn_params" in config.json. LSST db devs need not
 edit the "reducer" parameters, but may if they so desire.
 
-Run the following sequence of commands (overnight):
+Run the following sequence of commands (--reduce probably needs to run
+overnight):
 
     $ python create_reduced_log.py --initialize
     $ python create_reduced_log.py --reduce

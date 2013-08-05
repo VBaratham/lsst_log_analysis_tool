@@ -130,8 +130,11 @@ class SearchStringList(list):
         return None
 
 
-# Generate a profile of the queries in @tablename
+
 def query_profile(tablename, numtop, period, cur):
+    """
+    Generate profiles of the queries in @tablename
+    """
 
     # We are assuming the db already has the time functions defined.
     # This is one of the actions in the create reduced log table
@@ -343,31 +346,3 @@ def gnuplot(profiles, time_axis_label='time'):
             print >>scriptfile, """set title "Total queries by {0}" """.format(user)
             print >>scriptfile, """set key off"""
             print >>scriptfile, """plot "peruser_divided_{0}.dat" using 1:{1} with lines""".format(user, len(order) + 2)
-
-
-if __name__ == '__main__':
-    #unit test:
-    drange = (datetime(2011, 04, 10), datetime(2011, 04, 25))
-    drange2 = (datetime(2011, 04, 10), datetime(2011, 04, 25))
-    f1 = Filter(daterange=drange, user=['abecker', 'ktlim'])
-    f2 = Filter(daterange=drange2, user=['abecker', 'ktlim'])
-    print f1 == f2
-    # f3 = Filter(query_type='LOAD', negate=True)
-    # ssl = SearchStringList('any')
-    # ssl.extend(('%SELECT%', '%INSERT%', '%CREATE%'))
-    # f4 = Filter(daterange=drange, user='rplante', search_string=ssl)
-    # db = mysql.connect(host = 'localhost',
-    #                    user = 'root',
-    #                    passwd = '',
-    #                    unix_socket = '/u1/vbar/mysql/thesock',
-    #                    db = 'reduced_log')
-    # cur = db.cursor()
-    # # execute([(f1, f4), f3], 'unified', 'analysis_tool_temp', cur)
-    # peruser_divided, peruser_alltime, full_divided, full_alltime, full_topqueries, peruser_topqueries = query_profile('debug', 5, 'day', cur)
-    # gnuplot((peruser_divided, peruser_alltime, full_divided, full_alltime, full_topqueries, peruser_topqueries))
-    # tablecounts, joincounts = select_table_profile('unified', 'day', cur)
-    # for table, count in tablecounts.iteritems():
-    #     print '{0} : {1}'.format(table, count)
-    # print '-' * 100
-    # for join, count in joincounts.iteritems():
-    #     print '{0} : {1}'.format(join, count)
