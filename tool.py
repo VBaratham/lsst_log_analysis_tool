@@ -127,7 +127,8 @@ class Tool(Application):
         week = RadioButton('Week',
                            position = (left, row1 + rowspace),
                            group = self.time_division_radiogroup,
-                           value = 'week')
+                           value = 'week',
+                           enabled = False) #TODO: implement 'week' in the gnuplot function
         month = RadioButton("Month",
                             position = (right, row1 + rowspace),
                             group = self.time_division_radiogroup,
