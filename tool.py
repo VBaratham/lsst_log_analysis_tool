@@ -1,7 +1,7 @@
 from GUI import Application, Window, ScrollableView, CheckBox, Frame, \
 TextField, RadioButton, RadioGroup, Button, Image, Label
 
-from myutils import querytypes, clean_list, print_and_execute, get_conn
+from myutils import querytypes, clean_list, print_and_execute, get_conn, config
 from Filter import Filter, query_profile, gnuplot, SearchStringList
 from MyComponents import TopqueryPanel, TopqueryLabel, GraphView, \
 ResponsiveTextField
@@ -546,7 +546,7 @@ class Tool(Application):
         
         # TODO: support for numtop?
         profiles = query_profile(nexttable,
-                                 200, #numtop
+                                 config.get("numtop") or 200, #numtop
                                  self.time_division_radiogroup.value,
                                  self.cur)
         peruser_divided, peruser_alltime, full_divided, full_alltime, full_topqueries, peruser_topqueries = profiles
