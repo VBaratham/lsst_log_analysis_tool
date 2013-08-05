@@ -151,8 +151,8 @@ class Tool(Application):
         y_spacing = 20
         self.query_type_checkboxes = {}
         for qtype in querytypes:
-            self.query_type_checkboxes[qtype] = CheckBox(qtype.replace('_',
-                                                                       '_ '),
+            # underscores don't display properly, need an extra space after
+            self.query_type_checkboxes[qtype] = CheckBox(qtype.replace('_', '_ '),
                                                          position = (x_pos,
                                                                      y_pos),
                                                          value = True)
@@ -343,6 +343,13 @@ class Tool(Application):
         to the window again. If @initial is True, only the last partition
         (month) of the 'unified' table will be used for counts, but all
         users and servers will still be shown
+
+        @initial - if this is the first time the checkbox lists are being
+                   generated, it works a bit differently: the counts are
+                   taken from just the last partition of the unified table
+                   so that startup doesn't take forever. We then also need
+                   to grab the names of other users who didn't appear in
+                   this first partition
         """
 
         # Remove current user and server checkbox panels from the window
@@ -380,7 +387,8 @@ class Tool(Application):
         size_width = 220
         extent_width = size_width
         for userid, user, count in userlist:
-            self.user_checkboxes[user] = CheckBox("{0} ({1})".format(user.replace('_', '_ '), count),
+            self.user_checkboxes[user] = CheckBox("{0} ({1})".format(user.replace('_', '_ '),
+                                                                     count),
                                                   position = (x_pos, y_pos),
                                                   value = True)
             extent_width = max(self.user_checkboxes[user].size[0], extent_width)
@@ -426,7 +434,8 @@ class Tool(Application):
         size_width = 300
         extent_width = size_width
         for serverid, server, count in serverlist:
-            self.server_checkboxes[server] = CheckBox("{0} ({1})".format(server, count),
+            self.server_checkboxes[server] = CheckBox("{0} ({1})".format(server,
+                                                                         count),
                                                       position = (x_pos, y_pos),
                                                       value = True)
             extent_width = max(self.server_checkboxes[server].size[0], extent_width)
@@ -544,9 +553,8 @@ class Tool(Application):
         # Get profiles of the created table
         nexttable = self.next_table_name()
         
-        # TODO: support for numtop?
         profiles = query_profile(nexttable,
-                                 config.get("numtop") or 200, #numtop
+                                 config.get("numtop") or 200,
                                  self.time_division_radiogroup.value,
                                  self.cur)
         peruser_divided, peruser_alltime, full_divided, full_alltime, full_topqueries, peruser_topqueries = profiles
@@ -555,6 +563,7 @@ class Tool(Application):
         os.system("ls *.png | fgrep -v dummy | xargs rm")
         os.system("rm *.{gnu,dat}")
         gnuplot(profiles, time_axis_label=self.time_division_radiogroup.value)
+        # use a for loop so that gnuplot settings don't stick around between scripts
         os.system("for x in *.gnu; do gnuplot $x; done")
 
         # Load the new image lists
@@ -750,8 +759,8 @@ class Tool(Application):
             print >>sys.stderr, "unrecognized thing select all matching: %s" % where
             return
 
-        for user, cbox in elements.iteritems():
-            if search_string in user:
+        for text, cbox in elements.iteritems():
+            if search_string in text:
                 cbox.value = True
             else:
                 cbox.value = False
