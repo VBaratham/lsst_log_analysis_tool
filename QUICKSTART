@@ -1,22 +1,26 @@
 PREREQS
 
-Python Packages: MySQLdb, PyGUI
-gnuplot with png terminal (For png terminal installation instructions, see https://mailman.cae.wisc.edu/pipermail/help-octave/2005-August/017633.html and http://www.physics.buffalo.edu/phy410-505/tools/install/)
+Python Packages: MySQLdb, PyGUI gnuplot with png terminal (For png
+terminal installation instructions, see
+https://mailman.cae.wisc.edu/pipermail/help-octave/2005-August/017633.html
+and http://www.physics.buffalo.edu/phy410-505/tools/install/)
 
 ================================================================================
 
 CONFIGURING THE TOOL
 
-Edit connection "db_conn_params" in config.json. LSST db devs need not edit the "reducer" parameters, but may if they so desire.
+Edit connection "db_conn_params" in config.json. LSST db devs need not
+edit the "reducer" parameters, but may if they so desire.
 
 Run the following sequence of commands (overnight):
 
-    $ python create_reducde_log.py --initialize
-    $ python create_reducde_log.py --reduce
-    $ python create_reducde_log.py --create_unified
-    $ python create_reducde_log.py --unify
+    $ python create_reduced_log.py --initialize
+    $ python create_reduced_log.py --reduce
+    $ python create_reduced_log.py --create_unified
+    $ python create_reduced_log.py --unify
 
-If the --reduce step fails, go into mysql, reduced_log database, and drop the table that it was working on when it failed.
+If the --reduce step fails, go into mysql, reduced_log database, and
+drop the table that it was working on when it failed.
 
 Run the tool:
     

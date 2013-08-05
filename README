@@ -2,7 +2,10 @@ PREREQS
 
 Python Packages: MySQLdb, PyGUI
 
-You'll also need gnuplot with a png terminal installed. To get the png terminal, install zlib, libpng, freetype, and libgd before installing gnuplot (2). You should have mysql installed and it should have the general_log database.
+You'll also need gnuplot with a png terminal installed. To get the png
+terminal, install zlib, libpng, freetype, and libgd before installing
+gnuplot (2). You should have mysql installed and it should have the
+general_log database.
 
 ================================================================================
 
@@ -10,39 +13,59 @@ CONFIGURING THE TOOL
 
 Edit config.json as necessary.
 
-What can I specify in config.json?
-config.json is a dictionary with all the configuration information. Here are the keys allowed (other keys are ignored) and what their values should be:
+What can I specify in config.json?  config.json is a dictionary with
+all the configuration information. Here are the keys allowed (other
+keys are ignored) and what their values should be:
 
-1.) "db_conn_params": dict of kwargs to be passed to MySQLdb.connect(). See MySQLdb documentation for the allowed kwargs.
-    Note: the "cursorclass" kwarg can be specified here as a string for json compatability. "Cursor" or "SSCursor" are the only ones that the tool can use.
+1.) "db_conn_params": dict of kwargs to be passed to
+    MySQLdb.connect(). See MySQLdb documentation for the allowed
+    kwargs.  Note: the "cursorclass" kwarg can be specified here as a
+    string for json compatability. "Cursor" or "SSCursor" are the only
+    ones that the tool can use.
 
-2.) "reducer": dict defining the behavior of the query reducer (preprocessor). The default config.json has reducer options that are more or less suitable for LSST database developers.
-    Keys and values -
-       "ignore_queries": List of full queries to discard
-       "ignore_users": List of users whose queries will be discarded
-       "unwanted_terms": List of strings. If any of these strings are found in a query, that query will be discarded
-       "unwanted_starts": List of strings. If any of these strings are found at the start of a query, that query will be discarded
+2.) "reducer": dict defining the behavior of the query reducer
+    (preprocessor). The default config.json has reducer options that
+    are more or less suitable for LSST database developers.  Keys and
+    values - "ignore_queries": List of full queries to discard
+    "ignore_users": List of users whose queries will be discarded
+    "unwanted_terms": List of strings. If any of these strings are
+    found in a query, that query will be discarded "unwanted_starts":
+    List of strings. If any of these strings are found at the start of
+    a query, that query will be discarded
+
+3.) "numtop": Number of top queries to show for each user (defaults to
+    200 if not specified)
 
 ================================================================================
 
 PREPARING THE LOG
 
-To create the reduced_log schema ('reduced_log' db and tables 'users' and 'servers' therein):
+To create the reduced_log schema ('reduced_log' db and tables 'users'
+and 'servers' therein):
+
     $ python create_reduced_log.py --initialize
 
-To reduce tables from general_log into their reduced versions in reduced_log:
+To reduce tables from general_log into their reduced versions in
+reduced_log:
+
     $ python create_reduced_log.py --reduce
 
 To create the 'unified' table in the reduced_log db
+   
     $ python create_reduced_log.py --create_unified
-    Note: this requires at least 2 tables to be already reduced. Their data will go into the unified table.
+   
+    Note: this requires at least 2 tables to be already reduced.
+    Their data will go into the unified table.
 
-To unify all the individual month tables in the reduced_log db (add a new month(s)'s data in)
+To unify all the individual month tables in the reduced_log db (add a
+new month(s)'s data in)
+
     $ python create_reduced_log.py --unify
 
 
 To display these commands:
-    $ python create_reduced_log.py
+   
+   $ python create_reduced_log.py
 
 
 ================================================================================
@@ -55,47 +78,80 @@ Run tool.py
 
 Most of the filters are pretty self explanatory. Here are a few notes:
 
-Enter dates in mm/dd/yyyy format (single digit month/day are okay). Be careful using group by week, because weeks can get cut off at year boundaries.
+Enter dates in mm/dd/yyyy format (single digit month/day are okay). Be
+careful using group by week, because weeks can get cut off at year
+boundaries.
 
-Deselecting all of a certain filter allows anything to pass for that category (ie, is equivalent to selecting all).
+Deselecting all of a certain filter allows anything to pass for that
+category (ie, is equivalent to selecting all).
 
-The number in parenthesis next to each user/server is the number of queries in the current data set from that user/server.
+The number in parenthesis next to each user/server is the number of
+queries in the current data set from that user/server.
 
-For user/server search strings: typing in the text field will automatically select the users/servers for which your search string is a substring. IMPORTANT: On some systems, this may be one keystroke behind, so if the checkboxes don't light up when expected, hit enter (or another key). For more info, see footnote (1).
+For user/server search strings: typing in the text field will
+automatically select the users/servers for which your search string is
+a substring. IMPORTANT: On some systems, this may be one keystroke
+behind, so if the checkboxes don't light up when expected, hit enter
+(or another key). For more info, see footnote (1).
 
-Query search strings are passed to mysql's LIKE, so appropriate wildcards are needed (ie, "%yFluxSigma%", not just "yFluxSigma"). If you don't type anything in a query search string box, it won't be included (leave the text as "Query Search String #"). If you start typing and decide you don't want to include that term, erase the text: leaving it empty will also exclude it.
+Query search strings are passed to mysql's LIKE, so appropriate
+wildcards are needed (ie, "%yFluxSigma%", not just "yFluxSigma"). If
+you don't type anything in a query search string box, it won't be
+included (leave the text as "Query Search String #"). If you start
+typing and decide you don't want to include that term, erase the text:
+leaving it empty will also exclude it.
 
-Be careful using the "Negate Filter" button above the "Refresh" and "Update" buttons - this puts a "NOT" in front of the "WHERE" clause of the sql statement that selects data. It's usually safer to use the individual negations/inversions.
+Be careful using the "Negate Filter" button above the "Refresh" and
+"Update" buttons - this puts a "NOT" in front of the "WHERE" clause of
+the sql statement that selects data. It's usually safer to use the
+individual negations/inversions.
 
 *** "Refresh" vs "Update" ***
 
-The "Refresh" button simply updates the graphics and top query lists based on the currently defined filter. The "Update" button does this and also causes the next filter to be cascaded on top of this one (ie, the next filter will select data from the new result set). Once data has been filtered out with "Update", future filters will execute faster, but any data that was filtered out won't show up.
+The "Refresh" button simply updates the graphics and top query lists
+based on the currently defined filter. The "Update" button does this
+and also causes the next filter to be cascaded on top of this one (ie,
+the next filter will select data from the new result set). Once data
+has been filtered out with "Update", future filters will execute
+faster, but any data that was filtered out won't show up.
 
 *** The graph panel ***
 
-The graph panel contains visualizations of the current result set. The radio buttons below the graph select the data view. They are as follows:
+The graph panel contains visualizations of the current result set. The
+radio buttons below the graph select the data view. They are as
+follows:
 
-All users:
-total queries over time -> queries by type over time -> breakdown of total queries by type -> breakdown of total queries by user
+All users: total queries over time -> queries by type over time ->
+breakdown of total queries by type -> breakdown of total queries by
+user
 
-Per user, query type:
-Breakdown of each user's query traffic by query type
+Per user, query type: Breakdown of each user's query traffic by query
+type
 
-Per user, time:
-Line graph showing each user's total queries over time
+Per user, time: Line graph showing each user's total queries over time
 
-Per user, query type and time:
-Line graph showing each user's queries over time with a separate line for each query type
+Per user, query type and time: Line graph showing each user's queries
+over time with a separate line for each query type
 
 To cycle between the different graphs in a view, click the graph.
 
 *** The top queries panel ***
 
-The top queries panel shows the top 200 most common queries and the number of times each query was run. To change between each user and the total, use the "prev" and "next" buttons.
+The top queries panel shows the top 200 most common queries and the
+number of times each query was run. To change between each user and
+the total, use the "prev" and "next" buttons.
 
 
 ================================================================================
 ================================================================================
-(1): Some systems (eg Windows) require events to be handled by the main system event loop, in which case the value of the text field isn't updated immediately upon the keystroke. However, the code that checks for updates in the textbox runs immediately upon the keystroke, which causes the discrepancy. See http://mail.python.org/pipermail/pygui/2010-November/000102.html and the "next message"
+(1): Some systems (eg Windows) require events to be handled by the
+main system event loop, in which case the value of the text field
+isn't updated immediately upon the keystroke. However, the code that
+checks for updates in the textbox runs immediately upon the keystroke,
+which causes the discrepancy. See
+http://mail.python.org/pipermail/pygui/2010-November/000102.html and
+the "next message"
 
-(2): See https://mailman.cae.wisc.edu/pipermail/help-octave/2005-August/017633.html and http://www.physics.buffalo.edu/phy410-505/tools/install/
+(2): See
+https://mailman.cae.wisc.edu/pipermail/help-octave/2005-August/017633.html
+and http://www.physics.buffalo.edu/phy410-505/tools/install/
