@@ -1,0 +1,18 @@
+{"reducer": {"ignore_queries": ["SELECT DATABASE()",
+				"commit",
+				"SET autocommit=?",
+				"SELECT @@version_comment LIMIT 1"],
+	     "ignore_users": ["root", "buildbot"],
+	     "unwanted_terms": ["information_schema", "mysql"],
+	     "unwanted_starts": ["SHOW",
+				 "SET sql_mode",
+				 "SET NAMES",
+				 "SET character_set_results"]
+	    },
+ "db_conn_params": {"host": "localhost",
+		    "user": "root",
+		    "passwd": "",
+		    "unix_socket": "/u1/vbar/mysql/thesock",
+		    "cursorclass": "SSCursor"
+		   }
+}
