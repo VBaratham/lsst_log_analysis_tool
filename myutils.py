@@ -70,11 +70,8 @@ def get_reserved_words(filename):
     Whitespace around the word is stripped
     Used for getting the list of mysql keywords from a text file
     """
-    words = set()
     with open(filename) as infile:
-        for line in infile.readlines():
-            words.add(line.strip())
-    return words
+        return set(line.strip() for line in infile.readlines())
 
 
 def clean(query, reserved_words=None):
