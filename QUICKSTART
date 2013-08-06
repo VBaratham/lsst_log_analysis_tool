@@ -9,8 +9,6 @@ mysql's general_log should have a table for each month, named 'yyyy_mm'
 
 ================================================================================
 
-CONFIGURING THE TOOL
-
 Edit connection "db_conn_params" in config.json. LSST db devs need not
 edit the "reducer" parameters, but may if they so desire.
 
