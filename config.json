@@ -1,6 +1,7 @@
 {"reducer": {"ignore_queries": ["SELECT DATABASE()",
 				"commit",
-				"SET autocommit=?",
+				"SET autocommit=0",
+				"SET autocommit=1",
 				"SELECT @@version_comment LIMIT 1"],
 	     "ignore_users": ["root", "buildbot"],
 	     "unwanted_terms": ["information_schema", "mysql"],

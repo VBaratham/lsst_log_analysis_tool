@@ -46,12 +46,12 @@ def reduce_log(tablename, cur):
         cleaned_query = clean(query, reserved_words)
         # Clean the query some more: remove numlists, replace constants
         cleaned_query = numlist_re.sub(numlist_sub_fcn, cleaned_query)
-        cleaned_query, vals = repl_constants(cleaned_query)
-        vals = ' ~ '.join(vals)
         try:
-            user, server, query = reducer.accept(user_host, cleaned_query)
+            user, server, cleaned_query = reducer.accept(user_host, cleaned_query)
         except TypeError:
             continue
+        cleaned_query, vals = repl_constants(cleaned_query)
+        vals = ' ~ '.join(vals)
 
         if user not in users:
             users[user] = usernum
