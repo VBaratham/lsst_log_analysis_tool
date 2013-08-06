@@ -56,14 +56,6 @@ def printlist(lst, skiplines=False):
         print l
         if skiplines: print "\n"
 
-def textbetween(orig, ldelim, rdelim):
-    try:
-        start = orig.index(ldelim) + len(ldelim)
-        end = orig.index(rdelim, start)
-        return orig[start:end]
-    except ValueError:
-        return ""
-
 def print_and_execute(query, cur):
     print "Executing:"
     print query
