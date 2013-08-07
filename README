@@ -36,6 +36,9 @@ keys are ignored) and what their values should be:
 3.) "numtop": Number of top queries to show for each user (defaults to
     200 if not specified)
 
+4.) "plot_dir": directory to write data files, gnuplot scripts, and
+    plot image files. Can be absolute (start with '/') or relative.
+
 ================================================================================
 
 PREPARING THE LOG
