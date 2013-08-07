@@ -229,8 +229,7 @@ time_str_fcns = {'hour': lambda hour: datetime.fromtimestamp(hour * 60 * 60).iso
                  'month': lambda t: datetime((t+1)%12, t/12, 1).isoformat(),
                  'year': lambda year: datetime(year, 1, 1).isoformat()}
 
-# Writes gnuplot scripts and data files for plotting query profiles in <cwd>/to_plot/*.{gnu,dat}
-# TODO: make it actually use to_plot/ (or add a prefix param)
+# Writes gnuplot scripts and data files for plotting query profiles in the cwd
 def gnuplot(profiles, time_axis_label='time'):
     peruser_divided, peruser_alltime, full_divided, full_alltime, ftq, putq = profiles
     time_fcn = time_str_fcns[time_axis_label]

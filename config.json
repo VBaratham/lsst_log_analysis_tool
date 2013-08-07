@@ -16,5 +16,6 @@
 		    "unix_socket": "/u1/vbar/mysql/thesock",
 		    "cursorclass": "SSCursor"
 		   },
- "numtop": 250
+ "numtop": 250,
+ "plot_dir": "plots"
 }

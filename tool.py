@@ -551,6 +551,9 @@ class Tool(Application):
         self.last_used_fil = self.fil
 
     def create_new_graphs_and_topqueries(self):
+        prefix = config.get('plot_dir') or 'plots'
+        current_dir = os.getcwd()
+
         # Get profiles of the created table
         nexttable = self.next_table_name()
         
@@ -560,9 +563,7 @@ class Tool(Application):
                                  self.cur)
         peruser_divided, peruser_alltime, full_divided, full_alltime, full_topqueries, peruser_topqueries = profiles
 
-        # Remove previous .dat, .gnu, .png files and run the gnuplot scripts
-        os.system("ls *.png | fgrep -v dummy | xargs rm")
-        os.system("rm *.{gnu,dat}")
+        os.chdir(prefix)
         gnuplot(profiles, time_axis_label=self.time_division_radiogroup.value)
         # use a for loop so that gnuplot settings don't stick around between scripts
         os.system("for x in *.gnu; do gnuplot $x; done")
@@ -575,6 +576,8 @@ class Tool(Application):
                                  glob('peruser_divided_*.png') if '_total_' not in x]
         self.peruser_divided_total_ = [Image(file=x) for x in \
                                        glob('peruser_divided_total_*.png')]
+        
+        os.chdir(current_dir)
 
         # Set self.image.images = whatever's selected in the radio
         # (we got new lists)
