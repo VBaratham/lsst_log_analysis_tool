@@ -87,7 +87,8 @@ def clean(query, reserved_words=None):
 
     cleaned_query = query.strip()
     cleaned_query = ' '.join([
-        (word.upper() if word.upper() in reserved_words else word) for word in re.split('\s+', query)
+        (word.upper() if word.upper() in reserved_words else word)
+        for word in re.split('\s+', query)
     ])
     
     return cleaned_query
@@ -201,6 +202,9 @@ def partition_from_str(tablename):
     string for the partition containing the data from that table. The name
     of the partition is the same as the name of the table, and the range is
     'VALUES LESS THAN <that month +1 day>'
+
+    partition_from_str('2010_04') returns "PARTITION 2010_04 VALUES LESS THAN (TO_DAYS(2010-05-01))"
+    partition_from_str('2010_12') returns "PARTITION 2010_12 VALUES LESS THAN (TO_DAYS(2011-1-01))"
     """
     
     year, month = [int(x) for x in tablename.split('_')]
