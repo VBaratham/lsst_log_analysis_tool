@@ -4,8 +4,11 @@ Python Packages: MySQLdb, PyGUI
 
 You'll also need gnuplot with a png terminal installed. To get the png
 terminal, install zlib, libpng, freetype, and libgd before installing
-gnuplot (2). You should have mysql installed and it should have the
-general_log database.
+gnuplot (2).
+
+You should have mysql installed and the general log should be divided
+by month in tables named yyyy_mm, such as '2010_04' for April
+2010. These tables should be in a database called 'general_log'.
 
 ================================================================================
 
