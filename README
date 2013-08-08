@@ -25,13 +25,20 @@ keys are ignored) and what their values should be:
 
 2.) "reducer": dict defining the behavior of the query reducer
     (preprocessor). The default config.json has reducer options that
-    are more or less suitable for LSST database developers.  Keys and
-    values - "ignore_queries": List of full queries to discard
-    "ignore_users": List of users whose queries will be discarded
-    "unwanted_terms": List of strings. If any of these strings are
-    found in a query, that query will be discarded "unwanted_starts":
-    List of strings. If any of these strings are found at the start of
-    a query, that query will be discarded
+    are more or less suitable for LSST database developers.
+
+    Keys and values -
+
+        "ignore_queries": List of full queries to discard
+
+	"ignore_users": List of users whose queries will be discarded
+
+	"unwanted_terms": List of strings. If any of these strings are
+    			  found in a query, that query will be discarded
+			  
+	"unwanted_starts": List of strings. If any of these strings
+    			   are found at the start of a query, that
+    			   query will be discarded
 
 3.) "numtop": Number of top queries to show for each user (defaults to
     200 if not specified)
